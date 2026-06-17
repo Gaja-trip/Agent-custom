@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>부안군 건축인허가 가이드북 | 웹 배포판</title>
+    <meta
+      name="description"
+      content="부안군 건축인허가 가이드북을 목차별 웹페이지와 쉬운 설명으로 재구성한 배포용 사이트입니다."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-root="./">
+    <header class="site-header">
+      <a class="brand" href="./index.html" aria-label="처음으로">
+        <span class="brand-mark" aria-hidden="true">B</span>
+        <span>
+          <strong>부안군 건축인허가 가이드북</strong>
+          <small>목차별 웹 배포판</small>
+        </span>
+      </a>
+      <nav class="top-nav" aria-label="주요 메뉴">
+        <a href="#chapters">목차별 페이지</a>
+        <a href="#guide-map">업무별 길찾기</a>
+        <a href="#reader">원문 보기</a>
+        <a href="./buan-building-permit-guidebook.pdf" download>PDF</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Buan Building Permit Guide</p>
+          <h1 id="hero-title">목차별로 나누고, 실무자가 이해하기 쉽게 풀었습니다.</h1>
+          <p>
+            기존 116쪽 PDF를 여섯 개 장별 웹페이지로 분리했습니다. 각 장은
+            “무엇을 확인하는 장인지”, “언제 봐야 하는지”, “어떤 순서로 검토할지”를
+            먼저 설명하고, 필요할 때 원문 페이지를 바로 확대해 볼 수 있습니다.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#chapters">목차별 페이지 보기</a>
+            <a class="button" href="#reader">원문 전체 보기</a>
+          </div>
+        </div>
+        <figure class="hero-preview">
+          <img src="./assets/pages/page-001.webp" alt="부안군 건축인허가 가이드북 표지" />
+          <figcaption>원문 PDF 기준: 부안군 건축인허가 가이드북</figcaption>
+        </figure>
+      </section>
+
+      <section class="notice" aria-label="배포 전 확인 안내">
+        <strong>배포 전 확인</strong>
+        <span>
+          이 웹 자료는 제공된 원문 PDF를 기준으로 내용을 쉽게 재구성한 안내본입니다.
+          건축법, 조례, 고시, 수수료는 개정될 수 있으므로 대외 배포 전 최신 법령과
+          부안군 담당 부서 확인 문구를 함께 점검하세요.
+        </span>
+      </section>
+
+      <section class="section" id="chapters" aria-labelledby="chapters-title">
+        <div class="section-heading">
+          <p class="eyebrow">Table Of Contents</p>
+          <h2 id="chapters-title">목차별 웹페이지</h2>
+          <p>
+            원문의 장 순서를 유지하되, 독자가 먼저 이해해야 할 질문으로 다시
+            정리했습니다. 카드를 누르면 해당 장의 설명 페이지로 이동합니다.
+          </p>
+        </div>
+        <div class="chapter-list chapter-list-large" id="chapterList"></div>
+      </section>
+
+      <section class="section muted" id="guide-map" aria-labelledby="guide-map-title">
+        <div class="section-heading">
+          <p class="eyebrow">Quick Finder</p>
+          <h2 id="guide-map-title">상황별로 바로 찾아가기</h2>
+          <p>
+            건축 인허가 업무는 목차 순서대로만 보지 않는 경우가 많습니다. 가장 자주
+            찾는 상황을 골라 관련 장과 원문 페이지로 바로 이동할 수 있게 했습니다.
+          </p>
+        </div>
+        <div class="task-grid" id="taskGrid"></div>
+      </section>
+
+      <section class="section split" id="process" aria-labelledby="process-title">
+        <div class="section-heading">
+          <p class="eyebrow">Core Flow</p>
+          <h2 id="process-title">건축허가 기본 절차를 쉽게 보면</h2>
+          <p>
+            원문 10쪽의 절차를 “신청 전 준비 → 허가와 협의 → 착공 → 사용승인 →
+            대장 관리”의 흐름으로 다시 풀었습니다. 실제 업무에서는 대상 건축물과
+            토지 조건에 따라 추가 협의가 붙을 수 있습니다.
+          </p>
+        </div>
+        <div class="flow" id="permitFlow"></div>
+      </section>
+
+      <section class="section" id="reader" aria-labelledby="reader-title">
+        <div class="section-heading reader-heading">
+          <div>
+            <p class="eyebrow">Original Reader</p>
+            <h2 id="reader-title">원문 페이지 전체 보기</h2>
+            <p>목차별 설명을 읽다가 원문 확인이 필요할 때 116쪽 전체를 바로 열람할 수 있습니다.</p>
+          </div>
+          <label class="search">
+            <span>검색</span>
+            <input id="pageSearch" type="search" placeholder="예: 해체, 주차장, 문화재, 10쪽" />
+          </label>
+        </div>
+        <div class="reader-tools" id="readerTools" aria-label="장별 필터"></div>
+        <div class="page-grid" id="pageGrid"></div>
+      </section>
+    </main>
+
+    <aside class="page-modal" id="pageModal" aria-hidden="true" aria-label="원문 페이지 확대 보기">
+      <div class="modal-bar">
+        <button class="icon-button" id="modalClose" type="button" aria-label="닫기">×</button>
+        <strong id="modalTitle">원문 페이지</strong>
+        <div class="modal-controls">
+          <button class="button small" id="modalPrev" type="button">이전</button>
+          <button class="button small" id="modalNext" type="button">다음</button>
+        </div>
+      </div>
+      <img id="modalImage" alt="" />
+    </aside>
+
+    <footer class="site-footer">
+      <p>Source: 부안군 건축인허가 가이드북 PDF</p>
+      <p>
+        최신 법령 확인:
+        <a href="https://www.law.go.kr/" rel="noreferrer">국가법령정보센터</a>
+      </p>
+    </footer>
+
+    <script src="./site-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
