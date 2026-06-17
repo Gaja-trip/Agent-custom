@@ -1,0 +1,64 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/outputs/buan-building-permit-web/index.html"
+    },
+    {
+      "source": "/index.html",
+      "destination": "/outputs/buan-building-permit-web/index.html"
+    },
+    {
+      "source": "/assets/:path*",
+      "destination": "/outputs/buan-building-permit-web/assets/:path*"
+    },
+    {
+      "source": "/chapters/:path*",
+      "destination": "/outputs/buan-building-permit-web/chapters/:path*"
+    },
+    {
+      "source": "/buan-building-permit-guidebook.pdf",
+      "destination": "/outputs/buan-building-permit-web/buan-building-permit-guidebook.pdf"
+    },
+    {
+      "source": "/app.js",
+      "destination": "/outputs/buan-building-permit-web/app.js"
+    },
+    {
+      "source": "/chapter-page.js",
+      "destination": "/outputs/buan-building-permit-web/chapter-page.js"
+    },
+    {
+      "source": "/explain-extra.js",
+      "destination": "/outputs/buan-building-permit-web/explain-extra.js"
+    },
+    {
+      "source": "/site-data.js",
+      "destination": "/outputs/buan-building-permit-web/site-data.js"
+    },
+    {
+      "source": "/styles.css",
+      "destination": "/outputs/buan-building-permit-web/styles.css"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/buan-building-permit-guidebook.pdf",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    }
+  ]
+}
