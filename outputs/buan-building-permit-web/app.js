@@ -72,6 +72,119 @@ function renderTasks() {
     .join("");
 }
 
+function normalize(text) {
+  return String(text || "").toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function buildSearchIndex() {
+  const results = [];
+
+  guide.chapters.forEach((chapter) => {
+    results.push({
+      type: "장",
+      title: `${chapter.number}. ${chapter.title}`,
+      body: chapter.summary,
+      href: chapterUrl(chapter),
+      text: normalize([
+        chapter.title,
+        chapter.summary,
+        chapter.readWhen.join(" "),
+        chapter.sections.map((section) => section.searchText || section.plain).join(" "),
+      ].join(" ")),
+    });
+
+    chapter.sections.forEach((section) => {
+      results.push({
+        type: "상세 설명",
+        title: section.title,
+        body: [section.plain, ...(section.details || []), section.example].filter(Boolean).join(" "),
+        href: chapterUrl(chapter),
+        page: Number(String(section.pages).match(/\d+/)?.[0] || chapter.coverPage),
+        text: normalize(section.searchText || [chapter.title, section.title, section.plain, section.checks.join(" ")].join(" ")),
+      });
+    });
+  });
+
+  guide.tasks.forEach((task) => {
+    const chapter = guide.chapters.find((item) => item.id === task.chapter);
+    results.push({
+      type: "업무",
+      title: task.title,
+      body: task.copy,
+      href: chapterUrl(chapter),
+      page: task.page,
+      text: normalize([task.title, task.tag, task.copy, chapter?.title].join(" ")),
+    });
+  });
+
+  Object.entries(guide.pageHighlights).forEach(([page, title]) => {
+    const chapter = chapterForPage(Number(page));
+    results.push({
+      type: "원문",
+      title: `${page}쪽 · ${title}`,
+      body: chapter ? chapter.title : "원문 PDF 페이지",
+      href: chapter ? chapterUrl(chapter) : `${root}index.html#reader`,
+      page,
+      text: normalize([page, `${page}쪽`, title, chapter?.title].join(" ")),
+    });
+  });
+
+  return results;
+}
+
+const searchIndex = buildSearchIndex();
+
+function renderGlobalSearch() {
+  const input = document.querySelector("#globalSearch");
+  const target = document.querySelector("#globalSearchResults");
+  if (!input || !target) return;
+
+  const query = normalize(input.value);
+  if (!query) {
+    target.innerHTML = `
+      <article class="empty-search">
+        <strong>검색어를 입력하면 관련 목차와 원문 페이지가 표시됩니다.</strong>
+        <span>추천 검색어: 해체, 농지, 경관심의, 주차장, 문화재, 사용승인, 건축물대장</span>
+      </article>
+    `;
+    return;
+  }
+
+  const terms = query.split(" ").filter(Boolean);
+  const matches = searchIndex
+    .map((item) => {
+      const score = terms.reduce((sum, term) => sum + (item.text.includes(term) ? 1 : 0), 0);
+      return { item, score };
+    })
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title))
+    .slice(0, 18);
+
+  if (!matches.length) {
+    target.innerHTML = `
+      <article class="empty-search">
+        <strong>검색 결과가 없습니다.</strong>
+        <span>다른 표현으로 검색해 보세요. 예: 해체 허가, 문화재 조사, 토지이용계획</span>
+      </article>
+    `;
+    return;
+  }
+
+  target.innerHTML = matches
+    .map(({ item }) => `
+      <article class="search-result-card">
+        <span class="tag">${item.type}</span>
+        <h3>${item.title}</h3>
+        <p>${item.body.length > 160 ? `${item.body.slice(0, 160)}...` : item.body}</p>
+        <div class="card-actions">
+          <a href="${item.href}">관련 설명 보기</a>
+          ${item.page ? `<a href="#reader" data-open-page="${item.page}">원문 ${item.page}쪽</a>` : ""}
+        </div>
+      </article>
+    `)
+    .join("");
+}
+
 function renderFlow() {
   const flow = document.querySelector("#permitFlow");
   if (!flow) return;
@@ -174,6 +287,7 @@ document.addEventListener("click", (event) => {
 });
 
 document.querySelector("#pageSearch")?.addEventListener("input", renderPages);
+document.querySelector("#globalSearch")?.addEventListener("input", renderGlobalSearch);
 document.querySelector("#modalClose")?.addEventListener("click", closeModal);
 document.querySelector("#modalPrev")?.addEventListener("click", () => openPage(currentPage - 1));
 document.querySelector("#modalNext")?.addEventListener("click", () => openPage(currentPage + 1));
@@ -187,6 +301,7 @@ document.addEventListener("keydown", (event) => {
 
 renderChapters();
 renderTasks();
+renderGlobalSearch();
 renderFlow();
 renderFilters();
 renderPages();

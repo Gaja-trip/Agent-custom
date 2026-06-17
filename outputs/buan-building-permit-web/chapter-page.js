@@ -81,6 +81,12 @@ function renderChapter() {
           <span class="tag">${section.pages}</span>
           <h3>${index + 1}. ${section.title}</h3>
           <p>${section.plain}</p>
+          ${
+            section.details
+              ? `<ul class="detail-list">${section.details.map((detail) => `<li>${detail}</li>`).join("")}</ul>`
+              : ""
+          }
+          ${section.example ? `<p class="example-note"><strong>예시</strong> ${section.example}</p>` : ""}
           <div class="check-list">
             ${section.checks.map((check) => `<span>${check}</span>`).join("")}
           </div>
